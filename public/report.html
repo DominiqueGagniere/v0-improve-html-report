@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Status Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#1a1a2e',
+                        card: '#222240',
+                        border: '#3a3a5c',
+                        muted: '#6b6b8a',
+                        primary: '#2dd4bf',
+                        success: '#22c55e',
+                        warning: '#f59e0b',
+                        destructive: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-gray-100 min-h-screen p-6 md:p-10">
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- Header -->
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+            <div class="h-1 bg-gradient-to-r from-primary via-teal-400 to-emerald-500"></div>
+            <div class="p-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-100">Rapport d'Execution</h1>
+                        <p class="text-sm text-muted">Script de configuration automatise</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/20">
+                    <span class="w-2 h-2 rounded-full bg-success pulse-dot"></span>
+                    <span class="text-sm font-medium text-success">{{STATUT_GLOBAL}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info Card -->
+        <div class="bg-card rounded-xl border border-border p-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-100">Informations Utilisateur</h2>
+                    <p class="text-sm text-muted">Details du systeme et de l'utilisateur</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Info Item: Username -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Nom d'utilisateur</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{USERNAME}}</p>
+                    </div>
+                </div>
+
+                <!-- Info Item: Computer -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Nom de l'ordinateur</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{COMPUTERNAME}}</p>
+                    </div>
+                </div>
+
+                <!-- Info Item: Domain -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Domaine</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{USERDOMAIN}}</p>
+                    </div>
+                </div>
+
+                <!-- Info Item: Script Version -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Version du Script</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{SCRIPT_VERSION}}</p>
+                    </div>
+                </div>
+
+                <!-- Info Item: Date -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Date d'execution</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{DATE}}</p>
+                    </div>
+                </div>
+
+                <!-- Info Item: Time -->
+                <div class="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs text-muted uppercase tracking-wide">Heure d'execution</p>
+                        <p class="text-sm font-medium text-gray-100 truncate">{{TIME}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Execution Steps Card -->
+        <div class="bg-card rounded-xl border border-border p-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-100">Etapes d'Execution</h2>
+                    <p class="text-sm text-muted">Progression detaillee du script</p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                {{ETAPES}}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center py-4">
+            <p class="text-xs text-muted">Rapport genere automatiquement par le systeme de configuration</p>
+        </div>
+    </div>
+
+    <script>
+        // Step template for dynamic generation
+        // Use this function to generate step HTML from your script
+        function generateStepHTML(stepNumber, description, status) {
+            const statusConfig = {
+                'OK': { bg: 'bg-success/10', border: 'border-success/20', text: 'text-success', icon: 'check' },
+                'Erreur': { bg: 'bg-destructive/10', border: 'border-destructive/20', text: 'text-destructive', icon: 'x' },
+                'En cours': { bg: 'bg-warning/10', border: 'border-warning/20', text: 'text-warning', icon: 'dots' },
+                'Ignore': { bg: 'bg-muted/10', border: 'border-muted/20', text: 'text-muted', icon: 'minus' }
+            };
+            
+            const config = statusConfig[status] || statusConfig['En cours'];
+            
+            const icons = {
+                check: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
+                x: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>',
+                dots: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01"/>',
+                minus: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>'
+            };
+            
+            return `
+                <div class="flex items-center gap-4 p-4 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-all group">
+                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-semibold text-primary flex-shrink-0">
+                        ${stepNumber}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-100 group-hover:text-primary transition-colors">${description}</p>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1 rounded-full ${config.bg} border ${config.border} flex-shrink-0">
+                        <svg class="w-3.5 h-3.5 ${config.text}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            ${icons[config.icon]}
+                        </svg>
+                        <span class="text-xs font-medium ${config.text}">${status}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Example usage:
+        // document.querySelector('.space-y-3').innerHTML = [
+        //     generateStepHTML(1, 'Verification des prerequis', 'OK'),
+        //     generateStepHTML(2, 'Configuration du reseau', 'OK'),
+        //     generateStepHTML(3, 'Installation des composants', 'En cours'),
+        // ].join('');
+    </script>
+</body>
+</html>
